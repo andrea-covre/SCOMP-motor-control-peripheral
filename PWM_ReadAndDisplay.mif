@@ -1,0 +1,78 @@
+-- Altera Memory Initialization File (MIF)
+
+DEPTH = 2048;
+WIDTH = 16;
+
+ADDRESS_RADIX = HEX;
+DATA_RADIX = HEX;
+
+CONTENT
+  BEGIN
+    [000..7FF] : 0000;  -- Default to NOP
+
+           000 : 8008;  -- 	CALL GetDesiredPos
+           001 : 083F;  -- 	LOAD MaxSpeed
+           002 : 98F2;  -- 	OUT PWM
+           003 : 90F1;  -- 		IN Quad
+           004 : 8028;  -- 		CALL Abs
+           005 : 9804;  -- 		OUT Hex0
+           006 : 8016;  -- 		CALL CheckPos
+           007 : 2803;  -- 		JUMP Loop
+           008 : 9000;  -- 	IN Switches
+           009 : 4839;  -- 	AND Bit06
+           00A : 103D;  -- 	STORE DisPos
+           00B : 183D;  -- 	ADD DisPos
+           00C : 103D;  -- 	STORE DisPos
+           00D : 183D;  -- 	ADD DisPos
+           00E : 103D;  -- 	STORE DisPos
+           00F : 183D;  -- 	ADD DisPos
+           010 : 103E;  -- 	STORE DisPosBuff
+           011 : 183E;  -- 	ADD DisPosBuff
+           012 : 103D;  -- 	STORE DisPos
+           013 : 183E;  -- 	ADD DisPosBuff
+           014 : 103D;  -- 	STORE DisPos
+           015 : 8800;  -- 	RETURN
+           016 : 90F1;  -- 		IN Quad
+           017 : 8028;  -- 		CALL Abs
+           018 : 203D;  -- 		SUB DisPos
+           019 : 381D;  -- 		JPOS Stop
+           01A : 083F;  -- 		LOAD MaxSpeed
+           01B : 98F2;  -- 		OUT PWM
+           01C : 8800;  -- 		RETURN
+           01D : 082C;  -- 	LOAD Zero
+           01E : 98F2;  -- 	OUT PWM
+           01F : 2803;  -- 	JUMP Loop
+           020 : 90F2;  -- 	IN PWM
+           021 : 8023;  -- 	CALL Mod540
+           022 : 8800;  -- 	RETURN
+           023 : 3026;  -- 	JNEG Exit
+           024 : 6DE4;  -- 	ADDI -540
+           025 : 2823;  -- 	JUMP Mod540
+           026 : 6A1C;  -- 		ADDI 540
+           027 : 8800;  -- 		RETURN
+           028 : 382B;  -- 	JPOS   Abs_r        ; If already positive, return
+           029 : 582D;  -- 	XOR    NegOne       ; Flip all bits
+           02A : 6801;  -- 	ADDI   1            ; Add one
+           02B : 8800;  -- 	RETURN
+           02C : 0000;  -- Zero:      DW 0
+           02D : FFFF;  -- NegOne:    DW -1
+           02E : 0001;  -- One:	   DW 1
+           02F : 0001;  -- Bit0:      DW &B0000000001
+           030 : 0002;  -- Bit1:      DW &B0000000010
+           031 : 0004;  -- Bit2:      DW &B0000000100
+           032 : 0008;  -- Bit3:      DW &B0000001000
+           033 : 0010;  -- Bit4:      DW &B0000010000
+           034 : 0020;  -- Bit5:      DW &B0000100000
+           035 : 0040;  -- Bit6:      DW &B0001000000
+           036 : 0080;  -- Bit7:      DW &B0010000000
+           037 : 0100;  -- Bit8:      DW &B0100000000
+           038 : 0200;  -- Bit9:      DW &B1000000000
+           039 : 007F;  -- Bit06:	   DW &B0001111111
+           03A : 00FF;  -- LoByte:    DW &H00FF
+           03B : FF00;  -- HiByte:    DW &HFF00
+           03C : 0000;  -- Count:      DW 0
+           03D : 0000;  -- DisPos:     DW 0
+           03E : 0000;  -- DisPosBuff: DW 0
+           03F : 000F;  -- MaxSpeed:   DW 15
+           040 : 0000;  -- MinSpeed:   DW 0
+  END;

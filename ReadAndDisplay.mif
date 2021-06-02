@@ -1,0 +1,44 @@
+-- Altera Memory Initialization File (MIF)
+
+DEPTH = 2048;
+WIDTH = 16;
+
+ADDRESS_RADIX = HEX;
+DATA_RADIX = HEX;
+
+CONTENT
+  BEGIN
+    [000..7FF] : 0000;  -- Default to NOP
+
+           000 : 90F1;  -- 	IN Quad
+           001 : 8008;  -- 	CALL Mod6
+           002 : 8004;  -- 	CALL DisplayWithNeg
+           003 : 2800;  -- 	JUMP Start
+           004 : 9805;  -- 	OUT HEX1
+           005 : 800E;  -- 	CALL Negate
+           006 : 9804;  -- 	OUT HEX0
+           007 : 8800;  -- 	RETURN
+           008 : 300B;  -- 	JNEG Exit
+           009 : 6FFA;  -- 	ADDI -6
+           00A : 2808;  -- 	JUMP Mod6
+           00B : 6806;  -- 		ADDI 6
+           00C : 8800;  -- 		RETURN
+           00D : 3810;  -- 	JPOS   Abs_r        ; If already positive, return
+           00E : 5812;  -- 	XOR    NegOne       ; Flip all bits
+           00F : 6801;  -- 	ADDI   1            ; Add one
+           010 : 8800;  -- 	RETURN
+           011 : 0000;  -- Zero:      DW 0
+           012 : FFFF;  -- NegOne:    DW -1
+           013 : 0001;  -- Bit0:      DW &B0000000001
+           014 : 0002;  -- Bit1:      DW &B0000000010
+           015 : 0004;  -- Bit2:      DW &B0000000100
+           016 : 0008;  -- Bit3:      DW &B0000001000
+           017 : 0010;  -- Bit4:      DW &B0000010000
+           018 : 0020;  -- Bit5:      DW &B0000100000
+           019 : 0040;  -- Bit6:      DW &B0001000000
+           01A : 0080;  -- Bit7:      DW &B0010000000
+           01B : 0100;  -- Bit8:      DW &B0100000000
+           01C : 0200;  -- Bit9:      DW &B1000000000
+           01D : 00FF;  -- LoByte:    DW &H00FF
+           01E : FF00;  -- HiByte:    DW &HFF00
+  END;
